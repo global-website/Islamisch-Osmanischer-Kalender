@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamischer Kalender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+        .clock {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #555;
+        }
+        .date {
+            font-size: 1.5em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Islamischer Kalender</h1>
+    <div class="clock" id="clock"></div>
+    <div class="date" id="date"></div>
+
+    <script>
+        // Einstellungen für den Kalender
+        const RL_TO_FIKTIV_TAGE = 4; // 1 RL-Tag = 4 fiktive Tage
+        const FIKTIVE_WOCHE_TAGE = 7; // Eine Woche hat 7 Tage
+        const FIKTIVE_MONAT_TAGE = 28; // Ein Monat hat 28 Tage
+        const WOCHENTAGE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+        const MONATE = [
+            "Januar", "Februar", "März", "April", 
+            "Mai", "Juni", "Juli", "August", 
+            "September", "Oktober", "November", "Dezember"
+        ];
+
+        function updateTime() {
+            const rlNow = new Date();
+            const rlMillis = rlNow.getTime();
+            
+            // Umrechnung RL-Zeit in fiktive Zeit
+            const fiktiveMillisProTag = 24 * 60 * 60 * 1000 / RL_TO_FIKTIV_TAGE; // RL-Millisekunden für einen fiktiven Tag
+            const fiktiveMillis = rlMillis / RL_TO_FIKTIV_TAGE;
+            const fiktiveTage = Math.floor(fiktiveMillis / (24 * 60 * 60 * 1000));
+            const fiktiveStunden = Math.floor((fiktiveMillis % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+            const fiktiveMinuten = Math.floor((fiktiveMillis % (60 * 60 * 1000)) / (60 * 1000));
+            const fiktiveSekunden = Math.floor((fiktiveMillis % (60 * 1000)) / 1000);
+
+            // Fiktives Datum berechnen
+            const fiktiveWochentagIndex = fiktiveTage % FIKTIVE_WOCHE_TAGE;
+            const fiktiveWochentag = WOCHENTAGE[fiktiveWochentagIndex];
+
+            const fiktiverMonatIndex = Math.floor(fiktiveTage / FIKTIVE_MONAT_TAGE) % 12;
+            const fiktiverMonat = MONATE[fiktiverMonatIndex];
+
+            const fiktivesJahr = Math.floor(fiktiveTage / (FIKTIVE_MONAT_TAGE * 12)) + 1;
+            const fiktiverTagImMonat = (fiktiveTage % FIKTIVE_MONAT_TAGE) + 1;
+
+            // Ausgabe
+            document.getElementById("clock").textContent =
+                `${String(fiktiveStunden).padStart(2, "0")}:${String(fiktiveMinuten).padStart(2, "0")}:${String(fiktiveSekunden).padStart(2, "0")}`;
+            document.getElementById("date").textContent =
+                `${fiktiveWochentag}, ${fiktiverTagImMonat}. ${fiktiverMonat} ${fiktivesJahr}`;
+        }
+
+        // Aktualisierung jede Sekunde
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
