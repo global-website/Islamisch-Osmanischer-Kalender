@@ -6,24 +6,41 @@
     <title>Islamischer Kalender</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
         }
         h1 {
-            margin-top: 20px;
-            color: #333;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         .clock {
-            font-size: 2em;
+            font-size: 3em;
             margin: 20px 0;
-            color: #555;
+            color: #ffdd57;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         .date {
-            font-size: 1.5em;
-            color: #777;
+            font-size: 1.8em;
+            color: #ddd;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #bbb;
         }
     </style>
 </head>
@@ -31,12 +48,14 @@
     <h1>Islamischer Kalender</h1>
     <div class="clock" id="clock"></div>
     <div class="date" id="date"></div>
+    <footer>Kalender basiert auf einem fiktiven Zeitsystem</footer>
 
     <script>
         // Einstellungen für den Kalender
         const RL_TO_FIKTIV_TAGE = 4; // 1 RL-Tag = 4 fiktive Tage
         const FIKTIVE_WOCHE_TAGE = 7; // Eine Woche hat 7 Tage
         const FIKTIVE_MONAT_TAGE = 28; // Ein Monat hat 28 Tage
+        const STARTJAHR = 1443; // Startjahr
         const WOCHENTAGE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
         const MONATE = [
             "Januar", "Februar", "März", "April", 
@@ -63,7 +82,7 @@
             const fiktiverMonatIndex = Math.floor(fiktiveTage / FIKTIVE_MONAT_TAGE) % 12;
             const fiktiverMonat = MONATE[fiktiverMonatIndex];
 
-            const fiktivesJahr = Math.floor(fiktiveTage / (FIKTIVE_MONAT_TAGE * 12)) + 1;
+            const fiktivesJahr = STARTJAHR + Math.floor(fiktiveTage / (FIKTIVE_MONAT_TAGE * 12));
             const fiktiverTagImMonat = (fiktiveTage % FIKTIVE_MONAT_TAGE) + 1;
 
             // Ausgabe
